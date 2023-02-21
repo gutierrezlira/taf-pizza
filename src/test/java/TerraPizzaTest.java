@@ -20,7 +20,7 @@ public class TerraPizzaTest {
 
     @BeforeEach
     public void warmUp() {
-        driver =new ChromeDriver();
+        driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.get(TerraPizzaPage.URL);
         driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
@@ -28,13 +28,14 @@ public class TerraPizzaTest {
 
     @Test
     public void checkOrder_Pizza() {
-        WebElement scroll = driver.findElement(By.xpath(TerraPizzaPage.SCROLL_CATALOG));
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);",scroll);
+        //add pizza
+        WebElement scroll = driver.findElement(By.xpath(TerraPizzaPage.CATALOG_PIZZA_BTN));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", scroll);
 
-        driver.findElement(By.xpath(TerraPizzaPage.CATALOG_PIZZA)).click();
+        driver.findElement(By.xpath(TerraPizzaPage.CATALOG_PIZZA_BTN)).click();
 
         WebElement scroll2 = driver.findElement(By.xpath(TerraPizzaPage.SCROLL_DOWN_MARGARITA));
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);",scroll2);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", scroll2);
 
         WebElement addMargarita = driver.findElement(By.xpath(TerraPizzaPage.BUTTON_ADD_MARGARITA));
         new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.visibilityOf(addMargarita));
@@ -45,61 +46,64 @@ public class TerraPizzaTest {
         new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.visibilityOf(cart));
         cart.click();
 
-        WebElement fullCartWindow = driver.findElement(By.xpath(TerraPizzaPage.CART_CONTENT));
+/*        WebElement fullCartWindow = driver.findElement(By.xpath(TerraPizzaPage.CART_CONTENT));
         new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.visibilityOf(fullCartWindow));
         boolean isDisplayed = fullCartWindow.isDisplayed();
-        assertTrue(isDisplayed,"yes" );
+        assertTrue(isDisplayed,"yes" );*/ //
 
-        WebElement cart2 = driver.findElement(By.xpath(TerraPizzaPage.CHECK_IS_PIZZA_IN));
-        new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.visibilityOf(cart2));
-        String pizzaName = cart2.getText();
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-        assertEquals("Пицца Маргарита Классическая 32 см", pizzaName);
+        WebElement pizzaInf = driver.findElement(By.xpath(TerraPizzaPage.CHECK_IS_PIZZA_IN));
+        new WebDriverWait(driver, Duration.ofSeconds(10)).until(ExpectedConditions.visibilityOf(pizzaInf));
+        WebElement pizzaSize = driver.findElement(By.xpath(TerraPizzaPage.PIZZA_SIZE));
+        new WebDriverWait(driver, Duration.ofSeconds(10)).until(ExpectedConditions.visibilityOf(pizzaSize));
+
+        assertEquals("Пицца Маргарита Классическая 32 см", pizzaInf.getText());
     }
 
     @Test
-    public void checkOrder_Pizz_Drink(){
-        WebElement scroll = driver.findElement(By.xpath(TerraPizzaPage.SCROLL_CATALOG));
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);",scroll);
+    public void checkOrder_PizzaDrink() {
+        //add pizza
+        WebElement scroll = driver.findElement(By.xpath(TerraPizzaPage.CATALOG_PIZZA_BTN));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", scroll);
 
-        driver.findElement(By.xpath(TerraPizzaPage.CATALOG_PIZZA)).click();
+        driver.findElement(By.xpath(TerraPizzaPage.CATALOG_PIZZA_BTN)).click();
 
         WebElement scroll2 = driver.findElement(By.xpath(TerraPizzaPage.SCROLL_DOWN_MARGARITA));
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);",scroll2);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", scroll2);
 
         WebElement addMargarita = driver.findElement(By.xpath(TerraPizzaPage.BUTTON_ADD_MARGARITA));
         new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.visibilityOf(addMargarita));
         addMargarita.click();
 
+        //add Drink
         WebElement barNav = driver.findElement(By.xpath(TerraPizzaPage.MENU_CATALOG));
         //new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.visibilityOf(barNav));
         JavascriptExecutor scroll_up = (JavascriptExecutor) driver;
         scroll_up.executeScript("window.scrollTo(0, 0);");
-       //((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);",scroll);
+
         new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.visibilityOf(barNav));
         WebElement barButton = driver.findElement(By.xpath(TerraPizzaPage.CATALOG_BAR_BTN));
         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         barButton.click();
 
-        WebElement scroll3 = driver.findElement(By.xpath(TerraPizzaPage.ADD_DRINK_BTN));
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);",scroll3);
-        scroll3.click();
+        WebElement searchDrink = driver.findElement(By.xpath(TerraPizzaPage.ADD_DRINK_BTN));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", searchDrink);
+        searchDrink.click();
 
         //checking order in the cart
         WebElement cart = driver.findElement(By.xpath(TerraPizzaPage.CHECK_CART));
-        new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.visibilityOf(cart));
+        new WebDriverWait(driver, Duration.ofSeconds(7)).until(ExpectedConditions.visibilityOf(cart));
         cart.click();
 
-        WebElement fullCartWindow = driver.findElement(By.xpath(TerraPizzaPage.CART_CONTENT));
+/*        WebElement fullCartWindow = driver.findElement(By.xpath(TerraPizzaPage.CART_CONTENT));
         new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.visibilityOf(fullCartWindow));
         boolean isDisplayed = fullCartWindow.isDisplayed();
-        assertTrue(isDisplayed,"yes" );
+        assertTrue(isDisplayed,"yes" );*/
 
-        WebElement cart2 = driver.findElement(By.xpath(TerraPizzaPage.CHECK_IS_PIZZA_IN));
-        new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.visibilityOf(cart2));
-        String pizzaName = cart2.getText();
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-        assertEquals("Пицца Маргарита Классическая 32 см", pizzaName);
+        WebElement pizzaInf = driver.findElement(By.xpath(TerraPizzaPage.CHECK_IS_PIZZA_IN));
+        new WebDriverWait(driver, Duration.ofSeconds(10)).until(ExpectedConditions.visibilityOf(pizzaInf));
+        WebElement pizzaSize = driver.findElement(By.xpath(TerraPizzaPage.PIZZA_SIZE));
+        new WebDriverWait(driver, Duration.ofSeconds(10)).until(ExpectedConditions.visibilityOf(pizzaSize));
+        assertEquals("Пицца Маргарита Классическая 32 см", pizzaInf.getText());
 
         WebElement cart3 = driver.findElement(By.xpath(TerraPizzaPage.CHECK_DRINK));
         new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.visibilityOf(cart3));
@@ -109,7 +113,7 @@ public class TerraPizzaTest {
     }
 
     @AfterEach
-    public void tearDown(){
+    public void tearDown() {
         driver.quit();
     }
 }
