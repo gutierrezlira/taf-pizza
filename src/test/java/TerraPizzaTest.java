@@ -27,7 +27,7 @@ public class TerraPizzaTest {
     }
 
     @Test
-    public void checkOrder() {
+    public void checkOrder_Pizza() {
         WebElement scroll = driver.findElement(By.xpath(TerraPizzaPage.SCROLL_CATALOG));
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);",scroll);
 
@@ -40,6 +40,7 @@ public class TerraPizzaTest {
         new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.visibilityOf(addMargarita));
         addMargarita.click();
 
+        //checking  our order in the cart
         WebElement cart = driver.findElement(By.xpath(TerraPizzaPage.CHECK_CART));
         new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.visibilityOf(cart));
         cart.click();
@@ -52,8 +53,59 @@ public class TerraPizzaTest {
         WebElement cart2 = driver.findElement(By.xpath(TerraPizzaPage.CHECK_IS_PIZZA_IN));
         new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.visibilityOf(cart2));
         String pizzaName = cart2.getText();
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        assertEquals("Пицца Маргарита Классическая 32 см", pizzaName);
+    }
+
+    @Test
+    public void checkOrder_Pizz_Drink(){
+        WebElement scroll = driver.findElement(By.xpath(TerraPizzaPage.SCROLL_CATALOG));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);",scroll);
+
+        driver.findElement(By.xpath(TerraPizzaPage.CATALOG_PIZZA)).click();
+
+        WebElement scroll2 = driver.findElement(By.xpath(TerraPizzaPage.SCROLL_DOWN_MARGARITA));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);",scroll2);
+
+        WebElement addMargarita = driver.findElement(By.xpath(TerraPizzaPage.BUTTON_ADD_MARGARITA));
+        new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.visibilityOf(addMargarita));
+        addMargarita.click();
+
+        WebElement barNav = driver.findElement(By.xpath(TerraPizzaPage.MENU_CATALOG));
+        //new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.visibilityOf(barNav));
+        JavascriptExecutor scroll_up = (JavascriptExecutor) driver;
+        scroll_up.executeScript("window.scrollTo(0, 0);");
+       //((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);",scroll);
+        new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.visibilityOf(barNav));
+        WebElement barButton = driver.findElement(By.xpath(TerraPizzaPage.CATALOG_BAR_BTN));
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        barButton.click();
+
+        WebElement scroll3 = driver.findElement(By.xpath(TerraPizzaPage.ADD_DRINK_BTN));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);",scroll3);
+        scroll3.click();
+
+        //checking order in the cart
+        WebElement cart = driver.findElement(By.xpath(TerraPizzaPage.CHECK_CART));
+        new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.visibilityOf(cart));
+        cart.click();
+
+        WebElement fullCartWindow = driver.findElement(By.xpath(TerraPizzaPage.CART_CONTENT));
+        new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.visibilityOf(fullCartWindow));
+        boolean isDisplayed = fullCartWindow.isDisplayed();
+        assertTrue(isDisplayed,"yes" );
+
+        WebElement cart2 = driver.findElement(By.xpath(TerraPizzaPage.CHECK_IS_PIZZA_IN));
+        new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.visibilityOf(cart2));
+        String pizzaName = cart2.getText();
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+        assertEquals("Пицца Маргарита Классическая 32 см", pizzaName);
+
+        WebElement cart3 = driver.findElement(By.xpath(TerraPizzaPage.CHECK_DRINK));
+        new WebDriverWait(driver, Duration.ofSeconds(5)).until(ExpectedConditions.visibilityOf(cart3));
+        String drinkName = cart3.getText();
         driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
-        assertEquals("Пицца Маргарита Классическая", pizzaName);
+        assertEquals("Вода питьевая \"Аква Минерале\" негаз. (Россия)", drinkName);
     }
 
     @AfterEach
